@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+	const [value, setValue] = useState<number>(0);
+
+	useEffect(() => {
+		const valueAsString = localStorage.getItem('counterValue')
+		console.log(typeof valueAsString)
+		if (typeof valueAsString ==='string' && valueAsString !== '0') {
+			console.log(true)
+			let newValue = JSON.parse(valueAsString)
+			setValue(newValue)
+		}
+	}, [])
+
+	useEffect(() => {
+		localStorage.setItem('counterValue', JSON.stringify(value));
+	}, [value]);
+
+	const incHandler = () => {
+		setValue(value + 1);
+	};
+
+	const decHandler = () => {
+		setValue(value - 1);
+	}
+
+	return (
+		<div className="App">
+      		<h1>{value}</h1>
+      		<button onClick={incHandler}>inc</button>
+			<button onClick={decHandler}>dec</button>
+    	</div>
+	);
 }
 
 export default App;
